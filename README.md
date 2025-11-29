@@ -39,7 +39,7 @@ chmod +x docker-compose-export.sh
 
 ### Basic Usage
 
-Export all containers to the current directory:
+Export all containers to the current directory (default: `{name}-{id}.compose.yml`):
 
 ```bash
 ./docker-compose-export.sh
@@ -53,6 +53,26 @@ Export all containers to a specific directory:
 ./docker-compose-export.sh -o ~/docker-backups
 ```
 
+### Naming Options
+
+Use only container names in filenames:
+
+```bash
+./docker-compose-export.sh --nameonly
+```
+
+Use only container IDs in filenames:
+
+```bash
+./docker-compose-export.sh --idonly
+```
+
+Combine options:
+
+```bash
+./docker-compose-export.sh -o ~/backups --nameonly
+```
+
 ### Get Help
 
 ```bash
@@ -61,12 +81,27 @@ Export all containers to a specific directory:
 
 ## Output
 
-The script creates compose files named after each container:
+The script creates compose files using the naming format you specify:
 
+**Default (both name and ID):**
 ```
-container-name.compose.yml
-another-container.compose.yml
-web-server.compose.yml
+nginx-proxy-a1b2c3d4e5f6.compose.yml
+postgres-db-9f8e7d6c5b4a.compose.yml
+redis-cache-1a2b3c4d5e6f.compose.yml
+```
+
+**With `--nameonly`:**
+```
+nginx-proxy.compose.yml
+postgres-db.compose.yml
+redis-cache.compose.yml
+```
+
+**With `--idonly`:**
+```
+a1b2c3d4e5f6.compose.yml
+9f8e7d6c5b4a.compose.yml
+1a2b3c4d5e6f.compose.yml
 ```
 
 ## Example Output
@@ -77,12 +112,12 @@ Pulling latest docker-autocompose image...
 Found 3 container(s) to export
 Output directory: /home/user/docker-backups
 
-Exporting nginx-proxy...
-✓ Exported: /home/user/docker-backups/nginx-proxy.compose.yml
-Exporting postgres-db...
-✓ Exported: /home/user/docker-backups/postgres-db.compose.yml
-Exporting redis-cache...
-✓ Exported: /home/user/docker-backups/redis-cache.compose.yml
+Exporting nginx-proxy (a1b2c3d4e5f6)...
+✓ Exported: /home/user/docker-backups/nginx-proxy-a1b2c3d4e5f6.compose.yml
+Exporting postgres-db (9f8e7d6c5b4a)...
+✓ Exported: /home/user/docker-backups/postgres-db-9f8e7d6c5b4a.compose.yml
+Exporting redis-cache (1a2b3c4d5e6f)...
+✓ Exported: /home/user/docker-backups/redis-cache-1a2b3c4d5e6f.compose.yml
 
 ==========================================
 Export complete!
@@ -124,5 +159,4 @@ MIT License - See LICENSE file for details
 
 ## Related Projects
 
-- [docker-autocompose](https://github.com/Red5d/docker-autocompose) - Generate docker-compose files from running containers
 - [composerize](https://github.com/magicmark/composerize) - Convert docker run commands to compose files
